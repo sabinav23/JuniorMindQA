@@ -9,10 +9,10 @@ namespace PlanITpoker
     {
         IWebDriver driver;
 
-        private By emailInput = By.XPath("/html/body/div[1]/div/section/form[1]/div[1]/div/input");
-        private By passwordInput = By.XPath("/html/body/div[1]/div/section/form[1]/div[2]/div/input");
+        private By emailInput = By.CssSelector("input[type='email']");
+        private By passwordInput = By.CssSelector("input[type='password']");
         private By loginBtn = By.ClassName("btn-login");
-        private By errorMessage = By.XPath("/html/body/div[1]/div/section/form[1]/div[5]/div/div/div/span");
+        private By errorMessage = By.ClassName("alert-danger");
 
         public string Username { get; set; }
         public string Password { get; set; }
@@ -22,24 +22,34 @@ namespace PlanITpoker
             this.driver = driver;
         }
 
-        public By GetEmailInput()
+        public IWebElement GetEmailInput()
         {
-            return this.emailInput;
+            return driver.FindElement(emailInput);
         }
 
-        public By GetPasswordInput()
+        public IWebElement GetPasswordInput()
         {
-            return this.passwordInput;
+            return driver.FindElement(passwordInput);
         }
 
-        public By GetLoginBtn()
+        public IWebElement GetLoginBtn()
         {
-            return this.loginBtn;
+            return driver.FindElement(loginBtn);
         }
         public string GetErrorMessage()
         {
             return driver.FindElement(errorMessage).Text;
         }
+
+        public void InputUserName(string username)
+        {
+            this.GetEmailInput().SendKeys(username);
+        }
+        public void InputPassword(string username)
+        {
+            this.GetPasswordInput().SendKeys(username);
+        }
+
 
         public CreateNewRoomPopup ClickLogin()
         {

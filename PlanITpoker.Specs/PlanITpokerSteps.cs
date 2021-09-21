@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using Refit;
 using System;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -14,6 +15,7 @@ namespace PlanITpoker.Specs
         private HomePage home;
         private LoginPage login;
         private string _errorMessage;
+        private object _loginResponse;
 
         public PlanITpokerSteps()
         {
@@ -39,9 +41,9 @@ namespace PlanITpoker.Specs
         public void WhenTheClickingTheLoginButton()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            driver.FindElement(login.GetEmailInput()).SendKeys(login.Username);
-            driver.FindElement(login.GetPasswordInput()).SendKeys(login.Password);
-            wait.Until(e => e.FindElement(login.GetLoginBtn())).Click();
+            login.InputUserName(login.Username);
+            login.InputPassword(login.Password);
+            login.GetLoginBtn().Click();
             _errorMessage = login.GetErrorMessage();
         }
         
@@ -50,12 +52,6 @@ namespace PlanITpoker.Specs
         {
             driver.Title.Equals(title);
             
-        }
-
-        [Then(@"the error message for wrong password should appear (.*)")]
-        public void ThenTheErrorMessageShouldAppear(string errorMessage)
-        {
-            _errorMessage.Equals(errorMessage);
         }
 
     }
